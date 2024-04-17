@@ -25,7 +25,7 @@ To specify a different directory, add `-DCMAKE_INSTALL_PREFIX=/path/to/install/d
 
 # Using:
 
-To use, `#include"cnpy.h"` in your source code. Compile the source code mycode.cpp as
+To use, `#include "cnpy.h"` in your source code. Compile the source code mycode.cpp as
 
 ```bash
 g++ -o mycode mycode.cpp -L/path/to/install/dir -lcnpy -lz --std=c++11
@@ -53,3 +53,14 @@ struct NpyArray {
 ```
 
 See [example1.cpp](example1.cpp) for examples of how to use the library. example1 will also be build during cmake installation.
+
+# cnpy with memmap
+cnpy_mmap is an additional feature in this project. It allows you to read `.npy` file using `memap` to reduce memory consumption.
+
+# Using:
+
+To use, `#include "cnpy_mmap.h"` in your source code. Compile the source code mycode.cpp as
+
+```bash
+g++ -o mycode mycode.cpp -L/path/to/install/dir -lcnpy_mmap
+```

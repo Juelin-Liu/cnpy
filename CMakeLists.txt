@@ -5,9 +5,25 @@ endif(COMMAND cmake_policy)
 
 project(CNPY)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_STANDARD 17)
 
 option(ENABLE_STATIC "Build static (.a) library" ON)
+
+include_directories(${ZLIB_INCLUDE_DIRS})
+
+add_library(cnpy_mmap SHARED "cnpy_mmap.cpp")
+target_link_libraries(cnpy_mmap ${ZLIB_LIBRARIES})
+install(TARGETS "cnpy_mmap" LIBRARY DESTINATION lib PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+
+if(ENABLE_STATIC)
+    add_library(cnpy_mmap_static STATIC "cnpy_mmap.cpp")
+    set_target_properties(cnpy_mmap_static PROPERTIES OUTPUT_NAME "cnpy_mmap")
+    install(TARGETS "cnpy_mmap_static" ARCHIVE DESTINATION lib)
+endif(ENABLE_STATIC)
+
+install(FILES "cnpy_mmap.h" DESTINATION include)
+add_executable(mmap_example main.cc)
+target_link_libraries(mmap_example cnpy_mmap)
 
 find_package(ZLIB REQUIRED)
 
@@ -24,7 +40,7 @@ if(ENABLE_STATIC)
 endif(ENABLE_STATIC)
 
 install(FILES "cnpy.h" DESTINATION include)
-install(FILES "mat2npz" "npy2mat" "npz2mat" DESTINATION bin PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 
-# add_executable(example1 example1.cpp)
-# target_link_libraries(example1 cnpy)
+install(FILES "mat2npz" "npy2mat" "npz2mat" DESTINATION bin PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+add_executable(example1 example1.cpp)
+target_link_libraries(example1 cnpy)
