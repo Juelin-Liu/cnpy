@@ -29,7 +29,7 @@ namespace cnpyMmap
         size_t _num_bytes{0};
         size_t _arr_bytes{0};
         size_t _header_bytes{0};
-
+        MemmapContainer() = default;
         MemmapContainer(int fd, void* start, size_t num_bytes, size_t arr_bytes): 
             _fd{fd}, _start{start}, _num_bytes{num_bytes}, _arr_bytes{arr_bytes} {
                 _header_bytes = _num_bytes - _arr_bytes;
@@ -78,7 +78,7 @@ namespace cnpyMmap
         {
             return num_vals * word_size;
         }
-        std::shared_ptr<MemmapContainer> data_holder{nullptr};
+        std::shared_ptr<MemmapContainer> data_holder=std::make_shared<MemmapContainer>();
         std::vector<size_t> shape;
         size_t word_size;
         bool fortran_order;
