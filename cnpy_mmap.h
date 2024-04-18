@@ -19,7 +19,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-namespace cnpy
+namespace cnpyMmap
 {
     struct MemmapContainer
     {
